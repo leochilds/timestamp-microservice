@@ -3,7 +3,11 @@ const app = express();
 const port = process.env.PORT ? process.env.PORT : 3000;
 
 app.get('/api/timestamp/:date_string?', function (req, res) {
-    res.send(req.params);
+    const date_time = getDateTimeFromString(req.params.date_string);
+    const response = isNaN(date_time) ?
+        {"error" : "Invalid Date" } :
+        {"unix": date_time.getTime(), "utc" : date_time.toUTCString() };
+        res.send(response);
 })
 
 app.listen(port, () => {
